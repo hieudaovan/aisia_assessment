@@ -64,7 +64,7 @@ batch_size= 32
 
 #----------------------------------------------------
 
-train_dataloader, val_dataloader, test_dataloader = dataset.get_dataloader(batch_size=batch_size, num_workers=8, transform=transform)
+train_dataloader, val_dataloader, test_dataloader, train_val_pd_dataloader = dataset.get_dataloader(batch_size=batch_size, num_workers=8, transform=transform)
 
 mlflow.set_tracking_uri("file:///space/hotel/hieud/mlflow_aisia/mlruns")
 
@@ -96,9 +96,10 @@ with mlflow.start_run(run_name=description, description=description) as run:
 
     for t in range(epochs+1):
         print(f"Epoch {t}\n-------------------------------")
-        train(train_dataloader, model, loss_fn, metric_fn, optimizer, t, device)
-        evaluate(val_dataloader, model, loss_fn, metric_fn, t, device)
+        train(train_val_pd_dataloader, model, loss_fn, metric_fn, optimizer, t, device)
+        evaluate(test_dataloader, model, loss_fn, metric_fn, t, device)
     convert_img2feat( model.cpu(), 'img_without_woman_coats.csv')
+
     # precision = evaluate_performnace('val.csv')
     # mlflow.log_metric("Precision", f"{precision:2f}")
     mlflow.pytorch.log_model(model, "model")

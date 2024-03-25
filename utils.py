@@ -124,8 +124,8 @@ def convert_img2feat(model, data_path):
     train_val_pd , test_pd = train_test_split(data_pd, test_size=0.1, random_state=42, stratify=data_pd['category'])
     train_pd , val_pd = train_test_split(train_val_pd, test_size=0.2, random_state=42, stratify=train_val_pd['category'])
     latent_dict = {} 
-    for i in tqdm(range(len(train_val_pd))):
-        row = train_val_pd.iloc[i]
+    for i in tqdm(range(len(test_pd))):
+        row = test_pd.iloc[i]
         image = cv2.imread(row['img_path'])
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image_tensor = torch.tensor(image,  dtype=torch.float32)
@@ -137,7 +137,7 @@ def convert_img2feat(model, data_path):
             latent_feature = x.tolist()
         latent_dict[row['img_path']] = latent_feature
 
-    with open(f'/space/hotel/hieud/mlflow_aisia/latent_features_deep_learning.json', 'w') as json_file:
+    with open(f'/space/hotel/hieud/mlflow_aisia/latent_features_deep_learning_test.json', 'w') as json_file:
         json.dump(latent_dict, json_file)
 
 def similar_diff(img1_feature: list, img2_feature:list):

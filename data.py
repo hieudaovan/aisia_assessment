@@ -98,13 +98,14 @@ class ImageDataset():
         # train_pd.to_csv('train.csv', index=False)
         # val_pd.to_csv('val.csv', index=False)
         # test_pd.to_csv('test.csv', index=False)
-        train_dataset, val_dataset, test_dataset = ImageData(train_pd,transform), ImageData(val_pd,transform), ImageData(test_pd,transform)
+        train_dataset, val_dataset, test_dataset, train_val_dataset = ImageData(train_pd,transform), ImageData(val_pd,transform), ImageData(test_pd,transform), ImageData(train_val_pd,transform)
         
         train_dataloader = DataLoader(train_dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False)
         val_dataloader = DataLoader(val_dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False)
         test_dataloader = DataLoader(test_dataset, batch_size=batch_size, num_workers=num_workers, shuffle=True)
+        train_val_pd_dataloader = DataLoader(train_val_dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False)
 
-        return train_dataloader, val_dataloader,  test_dataloader
+        return train_dataloader, val_dataloader,  test_dataloader, train_val_pd_dataloader
 
 # test = ImageDataset('./image/AISIA_BOUTIQUE_DATASET')
 # train_dataloader, val_dataloader,  test_dataloader = test.get_dataloader(4)
