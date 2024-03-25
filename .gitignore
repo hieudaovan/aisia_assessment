@@ -1,0 +1,5 @@
+AISIA_BOUTIQUE_DATASET/
+image/
+mlruns/
+*.json
+*.txt
